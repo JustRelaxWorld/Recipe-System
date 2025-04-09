@@ -1,0 +1,326 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+ }
+
+ body{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    min-height: 100vh;
+    background:url('../images/login.jpg') no-repeat ;
+    background-size: cover;
+    background-position: center;
+ }
+
+ header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index:99 ;
+    color:rgb(236, 15, 173);
+    box-shadow: 5px 7px 10px rgba(0,0,0,0.1);
+}
+
+.logo img{
+    height: 100px;
+    width:fit-content;
+
+   }
+
+   .search-bar {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .search-bar input {
+    padding: 10px;
+    width: 300px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    font-size: 16px;
+  }
+  
+  .search-bar button {
+    padding: 10px 20px;
+    background-color: #507a8b;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-bar button:hover {
+    background-color: #e1b000;
+  }
+  
+  /* Responsive Styling */
+  @media (max-width: 768px) {
+    .hero-section {
+      height: 300px;
+    }
+    
+    .search-bar input {
+      width: 200px;
+    }
+  }
+.navigation a{
+    position: relative;
+    font-size: 1.1em;
+    color:  #fafafa;
+    text-decoration:none;
+    font-weight:1000;
+    margin-left:40px;
+}
+
+
+
+.navigation a::after
+{
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: -6px;
+    height: 5px;
+    background: #507a8b;
+    border-radius: 5px;
+    transform-origin:right;
+    transform:scaleX(0);
+    transition: transform .5s;
+}
+
+.navigation a:hover::after{
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+.container{
+    background:url('../images/strawberries.jpeg') no-repeat ;
+    background-size:contain;
+    background-position:center;
+}
+
+.wrapper{
+    position: relative;
+    width: 400px;
+    height: 480px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+   transition: height .2s ease;
+    }
+
+.wrapper .form-box{
+        width: 100%;
+        padding: 40px;
+}
+
+
+.wrapper .form-box{
+        width: 100%;
+        padding: 40px;
+      }
+
+      .wrapper.active-popup{
+        transform: scale(1);
+      }
+      .wrapper.active{
+        height: 560px;
+      }
+      
+      .wrapper .form-box{
+        width: 100%;
+        padding: 40px;
+      }
+      
+      .wrapper .form-box.login{
+        transition: transform .18s ease;
+        transform: translateX(0);
+      }
+      
+      .wrapper.active .form-box.login{
+        transition: none;
+        transform: translateX(-400px);
+      }
+      
+      .wrapper .form-box.register{
+        position: absolute;
+        transition: none;
+        transform: translateX(400px)
+      }
+      
+      .wrapper.active .form-box.register{
+        transition: transform .18s ease;
+        transform: translateX(0);
+      }
+
+
+      .input-box{
+        position: relative;
+        width: 100%;
+        height: 50px;
+        border-bottom: 2px solid #ffffff;
+        margin: 30px 0;
+      }
+      .input-box label{
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 1em;
+        color: #e9e0e0;
+        font-weight: 500;
+        pointer-events: none;
+        transition: .5s;
+      }
+      
+      .input-box input:focus~label,
+      .input-box input:valid~label{
+        top: -5px;
+      }
+      
+      
+      .input-box input{
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 1em;
+        color: #fff;
+        font-weight: 600;
+        padding: 0 35px 0 5px;
+      }
+      
+      .input-box .icon{
+        position: absolute;
+        right: 8px;
+        font-size: 1.2em;
+        color: #fff;
+        line-height: 55px;
+      }
+
+      /* Radio Button Group */
+.radio-group {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.radio-group p {
+  margin-right: 100px;
+  font-size: 0.8em;
+}
+
+.radio-group label {
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  font-size:0.75em;
+  font-weight: 500;
+  color: #e9e0e0;
+
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 5px;
+  accent-color: var(--primary-color);
+  transform: scale(1.1);
+}
+      
+      .remember-forgot{
+        font-size: .9em;
+        color: #fff;
+        font-weight: 500;
+        margin:-15px 0 15px;
+        display: flex;
+        justify-content: space-between;
+      
+      }
+      
+      .remember-forgot label input{
+        accent-color: #162938;
+        margin-right:   3px;
+      }
+      
+      .remember-forgot a{
+        color: #331bd0;
+        text-decoration: none;
+      }
+      
+      .remember-forgot a:hover{
+        text-decoration: underline;
+      }
+
+      .btn{
+        width: 100%;
+        height: 45px;
+        background: #331bd0;
+        border: none;
+        outline: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        color: #fff;
+        font-weight: 600;
+      }
+      
+      .login-register{
+        font-size: .9em;
+        color: #331bd0;
+        font-size:medium;
+        text-align: center;
+        font-weight: 800;
+        margin: 25px 0 10px;
+      }
+      
+      .login-register p a
+      {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 100;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Recipe</title>
+    <link rel="stylesheet" href="../css/style2.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <a href="#">
+                <img src="../images/logo-2.jpg" alt="Website Logo">
+            </a>
+        </div>
+       
+        <nav class="navigation">
+            <!-- Will be populated by auth.js -->
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="section-1">
+            <h1>What recipe do you have?</h1>
+            <div id="message" style="display: none;"></div>
+
+            <form id="recipeForm">
+                <div class="form-group">
+                    <label for="recipe-name">Recipe Name:</label>
+                    <input type="text" id="recipe-name" name="recipeName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ingredients">Ingredients:</label>
+                    <textarea id="ingredients" name="ingredients" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="instructions">Instructions:</label>
+                    <textarea id="instructions" name="instructions" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="prep-time">Prep Time (minutes):</label>
+                    <input type="number" id="prep-time" name="prepTime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cook-time">Cook Time (minutes):</label>
+                    <input type="number" id="cook-time" name="cookTime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="servings">Number of Servings:</label>
+                    <input type="number" id="servings" name="servings" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty" name="difficulty" required>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <option value="1">Breakfast</option>
+                        <option value="2">Lunch</option>
+                        <option value="3">Dinner</option>
+                        <option value="4">Desserts</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="recipe-image">Recipe Image:</label>
+                    <input type="file" id="recipe-image" name="recipeImage" accept="image/*">
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Recipe</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is logged in
+            requireLogin();
+            checkAuthStatus();
+
+            const form = document.getElementById('recipeForm');
+            const messageDiv = document.getElementById('message');
+
+            function showMessage(message, isError = false) {
+                messageDiv.textContent = message;
+                messageDiv.style.display = 'block';
+                messageDiv.style.color = isError ? 'red' : 'green';
+                messageDiv.style.padding = '10px';
+                messageDiv.style.marginBottom = '10px';
+                messageDiv.style.borderRadius = '4px';
+                messageDiv.style.backgroundColor = isError ? '#ffe6e6' : '#e6ffe6';
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const token = localStorage.getItem('token');
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/recipes/submit-recipe', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        showMessage('Recipe added successfully!');
+                        form.reset();
+                        // Redirect to all recipes page after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'allrecipes.html';
+                        }, 2000);
+                    } else {
+                        showMessage(result.message || 'Error adding recipe', true);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('Network error. Please try again later.', true);
+                }
+            });
+        });
+
+       
+
+    </script>
+</body>
+</html>

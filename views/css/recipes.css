@@ -1,0 +1,141 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+  }
+
+ .header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index:99 ;
+    color: blue;
+    box-shadow: 5px 7px 10px rgba(0,0,0,0.1);
+}
+
+  .logo img{
+   height: 100px;
+   width:fit-content;
+  }
+  
+  .search-bar {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .search-bar input {
+    padding: 10px;
+    width: 300px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    font-size: 16px;
+  }
+  
+  .search-bar button {
+    padding: 10px 20px;
+    background-color: #507a8b;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-bar button:hover {
+    background-color: #e1b000;
+  }
+  
+  /* Responsive Styling */
+  @media (max-width: 768px) {
+    .hero-section {
+      height: 300px;
+    }
+    
+    .search-bar input {
+      width: 200px;
+    }
+  }
+
+
+.navigation a{
+    position: relative;
+    font-size: 1.3em;
+    color: #3100f7;
+    text-decoration:none;
+    font-weight:1000;
+    margin-left:40px;
+}
+
+.navigation a::after
+{
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0%;
+    bottom: -6px;
+    height: 5px;
+    background: #3100f7;
+    border-radius: 5px;
+    transform-origin:right;
+    transform:scaleX(0);
+    transition: transform .5s;
+}
+
+.navigation a:hover::after{
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+
+
+.header-2
+
+    {
+        position: fixed;
+        top: 92px;
+        left: 0;
+        width: 100%;
+        padding: 20px 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index:99 ;
+        color: #3100f7;
+}
+
+.navigation-2 a{
+    position: relative;
+    font-size: 1.1em;
+    color: #3100f7;
+    text-decoration:none;
+    font-weight:1000;
+    margin-left:25px;
+}
+
+.navigation-2 a::after
+{
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0%;
+    bottom: -6px;
+    height: 5px;
+    background: #3100f7;
+    border-radius: 5px;
+    transform-origin:right;
+    transform:scaleX(0);
+    transition: transform .5s;
+}
+
+.navigation-2 a:hover::after{
+    transform-origin: left;
+    transform: scaleX(1);
+}

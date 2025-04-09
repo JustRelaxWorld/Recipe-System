@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <div class="header">
+
+            <div class="logo">
+                <a href="#">
+                    <img src="../images/logo-2.jpg" alt="Website Logo">
+                </a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Find a recipe or Ingredient..." id="searchInput">
+                <button type="button" id="searchButton">Search</button>
+              </div>
+              <nav class="navigation">
+                <!-- This will be populated by auth.js -->
+              </nav>
+    </div>
+
+    <div class="header-2">
+        <nav class="navigation-2">
+            <a href="#">Breakfast</a>
+            <a href="#">Lunch</a>
+            <a href="#">Dinner</a>
+            <a href="#">Desserts</a>
+        </nav>
+    </div>
+
+    <section class="hero">
+      <div class="hero-content">
+          <h1>Recipes Made Simple</h1>
+          <p>What you want we got it</p>
+          <a href="http://127.0.0.1:5500/SimpleRecipes/views/html/recipedetails.html?id=4" class="hero-btn">View Recipes</a>
+      </div>
+  </hero>
+  </section>
+
+  <section class="recipe-gallery">
+      <h2>Our Recipes</h2>
+      <div class="gallery-container">
+
+        <div class="recipe-item">
+          <a href="http://127.0.0.1:5500/SimpleRecipes/views/html/recipedetails.html?id=3"><img src="../images/cake.jpg" alt="Recipe Image 1"> </a>
+          
+          <div class="recipe-description">
+            <h3>Chocolate Cake</h3>
+            <p>Dig in to this savoury snack which requires only an hour to prepare</p>
+          </div>
+        </div>
+
+        <div class="recipe-item">
+
+          <a href="http://127.0.0.1:5500/SimpleRecipes/views/html/recipedetails.html?id=6">  <img src="../images//Hearty Meals.jpg" alt="Recipe Image 2"> </a>
+         
+          <div class="recipe-description">
+            <h3>Hearty Meals</h3>
+            <p>Dig in to this healthy but delicious dish</p>
+          </div>
+        </div>
+
+        <div class="recipe-item">
+          <a href="http://127.0.0.1:5500/SimpleRecipes/views/html/recipedetails.html?id=5"> <img src="../images/chapati.jpg" alt="Recipe Image 3"></a>
+          <div class="recipe-description">
+            <h3>At Home</h3>
+            <p>Recipes to Bring you back Home</p>
+          </div>
+        </div>
+
+
+        <div class="recipe-item">
+         <a href="http://127.0.0.1:5500/SimpleRecipes/views/html/recipedetails.html?id=7"></a> <img src="../images/ugali.jpg" alt="Recipe Image 4">
+          <div class="recipe-description">
+            <h3></h3>
+            <p>Bachelor's Dish</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="Pick">
+      <div class="pick">
+          <h2 class="h2">Pick of the Week</h2>
+          <h2 class="h2-1">GORDON RAMSAY CHEESE HANDBURGER</h2>
+
+          <h3 class="h2-2">Dive into this exquisite and savoury snack with the recipe from the world's best. </h3>
+          <h3 class="h2-2">What are you waiting for??? </h3>
+          <a href="http://127.0.0.1:5500/SimpleRecipes/views/html/recipedetails.html?id=8" class="recipe-btn">View Recipe Here</a>
+      </div>
+      </section>
+
+
+
+
+
+        <footer>
+            <div class="footer-container">
+              <div class="footer-section about">
+                <h3>About Us</h3>
+                <p>Recipes made Simple</p>
+              </div>
+
+              <div class="footer-section links">
+                <h3>Quick Links</h3>
+                <ul>
+                  <li><a href="#">Home</a></li>
+                  <li><a href="allrecipes.html">View Recipes</a></li>
+                 <li><a href="AddRecipe.html">Create your own</a></li>
+                </ul>
+              </div>
+
+              <div class="footer-section contact">
+                <h3>Contact Us</h3>
+                <ul>
+                  <li><i class="fas fa-map-marker-alt"></i>  Siwaka, Nairobi, Kenniya</li>
+                  <li><i class="fas fa-phone"></i> +254 797 54 32 11</li>
+                  <li><i class="fas fa-envelope"></i> elrecipe@google.com</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="footer-bottom">
+              &copy; 2024 EL Recipe |
+            </div>
+          </footer>
+
+    <script> // Search functionality
+            document.getElementById('searchButton').addEventListener('click', () => {
+                const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+                if (searchTerm) {
+                    // Redirect to allrecipes.html with search query
+                    window.location.href = `allrecipes.html?search=${encodeURIComponent(searchTerm)}`;
+                } else {
+                    alert('Please enter a search term.');
+                }
+    });</script>
+
+    <script src="/js/index.js"></script>
+    <script src="../js/auth.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>
+

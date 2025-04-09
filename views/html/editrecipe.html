@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Recipe</title>
+    <link rel="stylesheet" href="../css/style5.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="../images/logo-2.jpg" alt="Website Logo">
+            </a>
+        </div>
+        <nav class="navigation">
+            <a href="index.html">Home</a>
+            <a href="allrecipes.html">All Recipes</a>
+        </nav>
+    </header>
+
+    <div class="form-container">
+        <h2>Edit Recipe</h2>
+        <form id="editRecipeForm">
+            <div class="form-group">
+                <label for="recipeName">Recipe Name</label>
+                <input type="text" id="recipeName" name="recipeName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ingredients">Ingredients</label>
+                <textarea id="ingredients" name="ingredients" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="instructions">Instructions</label>
+                <textarea id="instructions" name="instructions" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="prepTime">Preparation Time (minutes)</label>
+                <input type="number" id="prepTime" name="prepTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cookTime">Cooking Time (minutes)</label>
+                <input type="number" id="cookTime" name="cookTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="servings">Servings</label>
+                <input type="number" id="servings" name="servings" required>
+            </div>
+
+            <div class="form-group">
+                <label for="difficulty">Difficulty</label>
+                <select id="difficulty" name="difficulty" required>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <!-- Will be populated dynamically -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="recipeImage">Recipe Image</label>
+                <input type="file" id="recipeImage" name="recipeImage" accept="image/*">
+                <img id="currentImage" class="preview-image" style="display: none;">
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="save-button">Save Changes</button>
+                <button type="button" class="cancel-button" onclick="window.location.href='allrecipes.html'">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:3000';
+        const recipeId = new URLSearchParams(window.location.search).get('id');
+
+        // Check authentication
+        if (!localStorage.getItem('token')) {
+            window.location.href = 'login.html';
+        }
+
+        // Fetch categories for dropdown
+        fetch(`${BACKEND_URL}/api/categories`)
+            .then(response => response.json())
+            .then(categories => {
+                const categorySelect = document.getElementById('category');
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.category_id;
+                    option.textContent = category.category_name;
+                    categorySelect.appendChild(option);
+                });
+            });
+
+        // Fetch recipe details
+        fetch(`${BACKEND_URL}/api/recipes/${recipeId}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => response.json())
+        .then(recipe => {
+            document.getElementById('recipeName').value = recipe.recipe_name;
+            document.getElementById('ingredients').value = recipe.ingredients;
+            document.getElementById('instructions').value = recipe.instructions;
+            document.getElementById('prepTime').value = recipe.prep_time;
+            document.getElementById('cookTime').value = recipe.cook_time;
+            document.getElementById('servings').value = recipe.servings;
+            document.getElementById('difficulty').value = recipe.difficulty.toLowerCase();
+            document.getElementById('category').value = recipe.category_id;
+
+            if (recipe.recipe_image) {
+                const currentImage = document.getElementById('currentImage');
+                currentImage.src = `${BACKEND_URL}/api/images/${recipe.recipe_image}`;
+                currentImage.style.display = 'block';
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('editRecipeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('recipeName', document.getElementById('recipeName').value);
+            formData.append('ingredients', document.getElementById('ingredients').value);
+            formData.append('instructions', document.getElementById('instructions').value);
+            formData.append('prepTime', document.getElementById('prepTime').value);
+            formData.append('cookTime', document.getElementById('cookTime').value);
+            formData.append('servings', document.getElementById('servings').value);
+            formData.append('difficulty', document.getElementById('difficulty').value);
+            formData.append('category', document.getElementById('category').value);
+
+            const imageFile = document.getElementById('recipeImage').files[0];
+            if (imageFile) {
+                formData.append('recipeImage', imageFile);
+            }
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/recipes/${recipeId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Recipe updated successfully');
+                    window.location.href = 'allrecipes.html';
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Error updating recipe');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating recipe');
+            }
+        });
+    </script>
+</body>
+</html>

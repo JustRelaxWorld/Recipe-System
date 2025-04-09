@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details</title>
+    <link rel="stylesheet" href="../css/style6.css">
+
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="../images/logo-2.jpg" alt="Website Logo">
+            </a>
+        </div>
+        <nav class="navigation">
+        
+            <div id="auth-section">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </nav>
+    </header>
+
+    <div class="recipe-container" id="recipe-details">
+        <!-- Content will be populated by JavaScript -->
+    </div>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:3000';
+        const DEFAULT_IMAGE_BASE64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSEkLzYvLy02Mi85OEI2PTZCOS87RVlJR05UWFNWX2JfP0RYZFhhX1//2wBDARUXFx4aHR4eHV9LJSUlX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1//wAARCADIAMgDASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAAECAwQFBv/EAC0QAAICAQMDAwQCAgMBAAAAAAABAhEDBCExEkFRBWFxEyKBoTKRQrEjUvDB/8QAGAEBAQEBAQAAAAAAAAAAAAAAAAECAwT/xAAeEQEBAQEBAQEAAwEBAAAAAAAAARECEiExQVFhcQP/2gAMAwEAAhEDEQA/APp4xGkaqI0j1vI5oxLURpBEJDGkUQNCGUCEMYQhgEACGQIYAIAEAmIYEiGIBCGIAEMQFghiIEIYiAEMRAhDEFIAGQf/2Q==';
+
+        // Check authentication status and update UI
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthSection();
+            loadRecipeDetails();
+        });
+
+        function updateAuthSection() {
+            const authSection = document.getElementById('auth-section');
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const username = localStorage.getItem('username');
+
+            if (isLoggedIn && username) {
+                authSection.innerHTML = `
+                    <a href="AddRecipe.html" class="create-recipe-button">Create Recipe</a>
+                    <a href="profile.html" class="profile-button">${username}</a>
+                    <a href="#" onclick="logout()" class="logout-button">Logout</a>
+                `;
+            } else {
+                authSection.innerHTML = `
+                    <a href="login.html">Login</a>
+                `;
+            }
+        }
+
+        function loadRecipeDetails() {
+            const recipeId = new URLSearchParams(window.location.search).get('id');
+            if (!recipeId) {
+                window.location.href = 'allrecipes.html';
+                return;
+            }
+
+            fetch(`${BACKEND_URL}/api/recipes/${recipeId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Recipe not found');
+                    return response.json();
+                })
+                .then(recipe => {
+                    const recipeDetails = document.getElementById('recipe-details');
+
+                    const ingredients = Array.isArray(recipe.ingredients)
+                        ? recipe.ingredients
+                        : recipe.ingredients.split(',').map(i => i.trim());
+
+                    const instructions = Array.isArray(recipe.instructions)
+                        ? recipe.instructions
+                        : recipe.instructions.split('.').map(i => i.trim()).filter(i => i);
+
+                    recipeDetails.innerHTML = `
+                        <div class="recipe-header">
+                            <img src="${recipe.recipe_image
+                                ? `${BACKEND_URL}/api/images/${recipe.recipe_image}`
+                                : DEFAULT_IMAGE_BASE64}"
+                                alt="${recipe.recipe_name}"
+                                class="recipe-image"
+                                onerror="this.src='${DEFAULT_IMAGE_BASE64}'">
+                            <div class="recipe-info">
+                                <h1 class="recipe-title">${recipe.recipe_name}</h1>
+                                <div class="recipe-meta">
+                                    <div class="meta-item">
+                                        <strong>Prep Time:</strong> ${recipe.prep_time} minutes
+                                    </div>
+                                    <div class="meta-item">
+                                        <strong>Cook Time:</strong> ${recipe.cook_time} minutes
+                                    </div>
+                                    <div class="meta-item">
+                                        <strong>Servings:</strong> ${recipe.servings}
+                                    </div>
+                                    <div class="meta-item">
+                                        <strong>Category:</strong> ${recipe.category_name || 'Uncategorized'}
+                                    </div>
+                                </div>
+                                <div class="difficulty ${recipe.difficulty.toLowerCase()}">
+                                    ${recipe.difficulty.charAt(0).toUpperCase() + recipe.difficulty.slice(1)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recipe-content">
+                            <h2 class="section-title">Ingredients</h2>
+                            <ul class="ingredients-list">
+                                ${ingredients.map(ingredient =>
+                                    `<li>${ingredient}</li>`
+                                ).join('')}
+                            </ul>
+
+                            <h2 class="section-title">Instructions</h2>
+                            <div class="instructions">
+                                ${instructions.map((instruction, index) =>
+                                    `<p>${index + 1}. ${instruction}</p>`
+                                ).join('')}
+                            </div>
+
+                            <div class="author-info">
+                                <p><strong>Created by:</strong> ${recipe.username}</p>
+                            </div>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('recipe-details').innerHTML = `
+                        <div style="text-align: center; padding: 40px;">
+                            <h2>Recipe not found</h2>
+                            <p>The recipe you're looking for doesn't exist or has been removed.</p>
+                            <a href="allrecipes.html">Back to All Recipes</a>
+                        </div>
+                    `;
+                });
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
